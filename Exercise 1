@@ -1,0 +1,41 @@
+fruitPrices = {'apples': 2.00, 'oranges': 1.50, 'pears': 1.75,
+               'limes': 0.75, 'strawberries': 1.00}
+
+
+def buyLotsOfFruit(orderList):
+    price = 0
+    for fruit, pounds in orderList:
+        if fruit in fruitPrices:
+            price += fruitPrices[fruit] * pounds
+        if fruit not in fruitPrices:
+            return 'none'
+    return price
+
+
+"""
+    orderList: List of (fruit, numPounds) tuples
+
+Returns cost of order
+"""
+
+" YOUR CODE HERE "
+
+orderList = [('apples', 2), ('pears', 3), ('limes', 4)]
+print('Cost of', orderList, 'is', buyLotsOfFruit(orderList))
+
+# Complete the `buyLotsOfFruit(orderList)` function in
+# `buyLotsOfFruit.py` which takes a list of `(fruit, weightInPounds)` tuples and returns the cost of the given list.
+# If there is some `fruit` in the list which doesn't appear in
+# `fruitPrices` it should return `None` (which is like `null` in Java).
+# Do not change the `fruitPrices` variable.
+#
+# If you implemented the function correctly the script should output the following. Note that we will also test it for different orderlists.
+#
+# ```
+# Cost of [('apples', 2.0), ('pears', 3.0), ('limes', 4.0)] is 12.25
+# ```
+#
+# **Advanced Exercise:** Write a `quickSort` function in
+# Python using list comprehensions. Use the first element as the pivot.
+#
+# If you run into problems with Python, be sure to check [the troubleshooting document](troubleshooting.md) for common errors.
