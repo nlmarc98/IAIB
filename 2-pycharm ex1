@@ -1,0 +1,14 @@
+def ex1(shopNames, shopPrices, fruit):
+    for i in range(len(shopNames)):
+        for f in shopPrices[i]:
+            if f == fruit:
+                print('Welcome to the ' + shopNames[i] + ' fruit shop')
+                print(shopPrices[i][f])
+                print('Apples cost €%.2f at %s.' % (shopPrices[i][f], shopNames[i]))
+            else:
+                continue
+
+    print('My, that is expensive')
+
+
+ex1(shopNames, shopPrices, 'apples')
