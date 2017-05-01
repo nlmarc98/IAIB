@@ -7,3 +7,13 @@
             cheapestPrice = price
 
     return cheapestShop
+
+
+/Madelief
+   best = None
+    cost = None
+    for x in fruitShops:
+        if cost is None or x.getPriceOfOrder(orderList) < cost:
+            cost = x.getPriceOfOrder(orderList)
+            best = x
+    return best
