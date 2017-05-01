@@ -1,0 +1,9 @@
+ cheapestShop = fruitShops[0]
+    cheapestPrice = cheapestShop.getPriceOfOrder(orderList)
+    for shop in fruitShops:
+        price = shop.getPriceOfOrder(orderList)
+        if cheapestPrice == None or price < cheapestPrice:
+            cheapestShop = shop
+            cheapestPrice = price
+
+    return cheapestShop
