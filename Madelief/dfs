@@ -1,0 +1,11 @@
+    stack = util.Stack()
+    stack.push((problem.getStartState(), [], []))
+
+    while not stack.isEmpty():
+        current, actions, visited = stack.pop()
+        if current not in visited:
+            if problem.isGoalState(current):
+                return actions
+            for coordinates, action, steps in problem.getSuccessors(current):
+                stack.push((coordinates, actions + [action], visited + [current]))
+    return []
