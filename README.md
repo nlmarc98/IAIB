@@ -1,4 +1,7 @@
 # IAIB
 IAIB (Python) Marc Verwoert &amp; Madelief Rennspies (2017) 
 
-Hoi
+
+
+#Marc-William Verwoert S4718801
+#Madelief Rennspies S4703103
