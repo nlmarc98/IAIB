@@ -1,0 +1,12 @@
+
+    queue = util.PriorityQueue()
+    queue.push((problem.getStartState(), [], []), heuristic)
+
+    while not queue.isEmpty():
+        current, actions, visited = queue.pop()
+        if current not in visited:
+            if problem.isGoalState(current):
+                return actions
+            for coordinates, action, steps in problem.getSuccessors(current):
+                queue.push((coordinates, actions + [action], visited + [current]), problem.getCostOfActions(actions + [action]) + heuristic(current, problem))
+    return []
