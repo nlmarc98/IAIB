@@ -23,10 +23,10 @@ class CornersProblem(search.SearchProblem):
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
         "*** YOUR CODE HERE ***"
-        corners = {self.corners[0]: False, self.corners[1]: False, self.corners[2]: False, self.corners[3]: False}
+        corners = []
 
         if self.startingPosition in self.corners:
-            corners[self.startingPosition] = True
+            corners.append(self.startingPosition)
         return (self.startingPosition, corners)
 
         util.raiseNotDefined()
@@ -34,14 +34,14 @@ class CornersProblem(search.SearchProblem):
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        location, corners = state
+        currentLocation = state[0]
+        corners = state[1]
 
-        if location in self.corners:
-            if not location in corners:
-                corners[location] = True
-        return list(corners).count(True) == 4
+        if currentLocation in self.corners:
+            if currentLocation not in corners:
+                corners.append(currentLocation)
+        return len(corners) == 4
 
-        util.raiseNotDefined()
 
     def getSuccessors(self, state):
         """
@@ -69,14 +69,14 @@ class CornersProblem(search.SearchProblem):
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             hitsWall = self.walls[nextx][nexty]
+            currentLocation = (nextx, nexty)
 
             if not hitsWall:
-                location = (nextx, nexty)
-                successorsCorners = state[1]
-                if location in self.corners:
-                    if not location in successorsCorners:
-                        successorsCorners[location] = True
-                successors.append(((location, successorsCorners), action, 1))
+                successor = list(state[1])
+                if currentLocation in self.corners:
+                    if not currentLocation in successor:
+                        successor.append(currentLocation)
+                successors.append(((currentLocation, successor), action, 1))
 
         self._expanded += 1
         return successors
