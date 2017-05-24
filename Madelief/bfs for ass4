@@ -1,0 +1,18 @@
+def breadthFirstSearch(problem):
+    Queue = util.Queue()
+    memory = []
+    start = (problem.getStartState(), None, [])
+    Queue.push(start)
+
+    while not Queue.isEmpty():
+        location, direction, path = Queue.pop()
+        if (location not in memory):
+            memory.append(location)
+            if (problem.isGoalState(location)):
+                return path
+            successors = list(problem.getSuccessors(location))
+            for coordinates, action, steps in successors:
+                if coordinates not in memory:
+                    Queue.push((coordinates, action, path + [action]))
+
+    return []
