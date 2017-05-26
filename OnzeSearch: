@@ -1,0 +1,52 @@
+def aStarSearch(problem, heuristic=nullHeuristic):
+  """
+  Search the node that has the lowest combined cost and heuristic first.
+  This algorithm is very much like the uniformCostSearch algorithm (see above) 
+  The *only* difference is that the priority for the fringe is pathCost+heuristicValue instead of just pathCost 
+  N.B.: the visited list still only contains pathCosts, heuristicValue is only used for the fringe
+  """
+  start = problem.getStartState()
+  # construct fringe as priority queue (i.e. lowest priority first out)
+  fringe = util.PriorityQueue()
+
+  # construct visited as dictionary
+  # visited has state as the key and contains (parent, action, pathcost) tuples
+  visited = {}            
+
+  # fringe contains tuples (state, action, parent, pathcost)
+  fringe.push( (start, None, None, 0), 0)
+
+  # Main part: iterate until goal is found (success) or fringe is
+  # empty (entire search tree visited without finding goal -> failure)
+  while not fringe.isEmpty() :
+    # pop next element of fringe, add to visited
+    state, parent, action, cost = fringe.pop()
+    if state in visited and visited[state][2] < cost : #don't re-expand if already visited with cheaper solution
+      continue
+    else:
+      visited[state] = (parent, action, cost)
+    # if goal state reached, extract path to goal and exit
+    if problem.isGoalState(state) :      
+      # backtrack up the chain of actions stored in visited to extract the path
+      path = []
+      parent,action,cost = visited[state]
+      while action is not None :
+        path.insert(0, action)
+        parent, action, cost = visited[parent] # action taken to this position
+      return path
+    # if not goal state, expand further
+    else :
+      # N.B. successor is (state, action, stepCost)
+      for successor in problem.getSuccessors(state) :
+        #print "Successors :", successor
+        # add to fringe, but only if not yet visited
+        succState, action, actcost = successor
+        succcost = cost + actcost
+        # add to fringe, but only if not yet visited at a lower cost
+        if succState not in visited or visited[succState][2] > succcost :
+          # add to the fringe, but now priority is f-value = g-value + heuristic value
+          fringe.push( (succState, state, action, succcost), succcost+heuristic(succState,problem) )
+
+  # if function reaches this point, fringe is empty -> fail
+  print("No path found")
+  return []   # return empty path
