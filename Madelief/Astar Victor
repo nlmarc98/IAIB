@@ -1,0 +1,30 @@
+ heuristics = heuristic(problem.getStartState(), problem)
+    value = 0
+    newvalue = value + heuristics
+
+    PriorityQueue = util.PriorityQueue()
+    memory = []
+    start = (problem.getStartState(), None, value, []);
+    PriorityQueue.push(start, newvalue)
+
+    while not PriorityQueue.isEmpty():
+        pop = PriorityQueue.pop()
+        location = pop[0]
+        direction = pop[1]
+        cost = pop[2]
+        path = pop[3]
+
+        if location not in memory:
+            memory.append(location)
+            successors = list(problem.getSuccessors(location))
+            for i in successors:
+                if i[0] not in memory:
+                    if (problem.isGoalState(i[0])):
+                        return path + [i[1]]
+                    heuristics = heuristic(i[0], problem)
+                    value = cost + i[2]
+                    newvalue = value + heuristics
+                    next = (i[0], i[1], value, path + [i[1]])
+                    PriorityQueue.push(next, newvalue)
+
+    return []
