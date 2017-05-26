@@ -6,6 +6,8 @@
 # John DeNero (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
 
+#Marc-William Verwoert S4718801 #Madelief Rennspies S4703103
+
 """
 In search.py, you will implement generic search algorithms which are called
 by Pacman agents (in searchAgents.py).
@@ -84,32 +86,29 @@ def depthFirstSearch(problem):
     print( "Start's successors:", problem.getSuccessors(problem.getStartState()) )
     """
     "*** YOUR CODE HERE ***"
-    stack = util.Stack()
-    stack.push((problem.getStartState(), [], []))
-
-    while not stack.isEmpty():
-        current, actions, visited = stack.pop()
-        if current not in visited:
-            if problem.isGoalState(current):
-                return actions
-            for coordinates, action, steps in problem.getSuccessors(current):
-                stack.push((coordinates, actions + [action], visited + [current]))
-    return []
+    util.raiseNotDefined()
 
 
 def breadthFirstSearch(problem):
-    "Search the shallowest nodes in the search tree first. [p 81]"
-    queue = util.Queue()
-    queue.push((problem.getStartState(), [], []))
+    Queue = util.Queue()
+    memory = []
+    start = (problem.getStartState(), None, [])
+    Queue.push(start)
 
-    while not queue.isEmpty():
-        current, actions, visited = queue.pop()
-        if current not in visited:
-            if problem.isGoalState(current):
-                return actions
-            for coordinates, action, steps in problem.getSuccessors(current):
-                queue.push((coordinates, actions + [action], visited + [current]))
+    while not Queue.isEmpty():
+        location, direction, path = Queue.pop()
+        if (location not in memory):
+            memory.append(location)
+            if (problem.isGoalState(location)):
+                return path
+            successors = list(problem.getSuccessors(location))
+            for coordinates, action, steps in successors:
+                if coordinates not in memory:
+                    Queue.push((coordinates, action, path + [action]))
+
     return []
+
+    util.raiseNotDefined()
 
 
 def uniformCostSearch(problem):
@@ -123,8 +122,12 @@ def uniformCostSearch(problem):
             if problem.isGoalState(current):
                 return actions
             for coordinates, action, steps in problem.getSuccessors(current):
-                queue.push((coordinates, actions + [action], visited + [current]), problem.getCostOfActions(actions + [action]))
+                queue.push((coordinates, actions + [action], visited + [current]),
+                           problem.getCostOfActions(actions + [action]))
     return []
+
+
+    util.raiseNotDefined()
 
 
 def nullHeuristic(state, problem=None):
@@ -137,28 +140,33 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
+
     heuristics = heuristic(problem.getStartState(), problem)
     value = 0
-    heuristic = value + heuristics
+    frontier = util.PriorityQueue()
+    visited = []
+    frontier.push((problem.getStartState(), None, value, []), heuristics)
 
-    queue = util.PriorityQueue()
-    queue.push((problem.getStartState(), [], []), heuristic)
-
-    while not queue.isEmpty():
-        current, actions, visited = queue.pop()
+    while not frontier.isEmpty():
+        current, direction, cost, path = frontier.pop()
         if current not in visited:
-            if problem.isGoalState(current):
-                return actions
-            for coordinates, action, steps in problem.getSuccessors(current):
-                queue.push((coordinates, actions + [action], visited + [current]), problem.getCostOfActions(actions + [action]) + heuristic(current, problem))
+            visited.append(current)
+            for coordinates, action, steps in list(problem.getSuccessors(current)):
+                if coordinates not in visited:
+                    if (problem.isGoalState(coordinates)):
+                        return path + [action]
+                    heuristics = heuristic(coordinates, problem)
+                    value = cost + steps
+                    frontier.push((coordinates, action, value, path + [action]), value + heuristics)
+
     return []
 
-    "Bonus assignment: Adjust the getSuccessors() method in CrossroadSearchAgent class"
-    "in searchAgents.py and test with:"
-    "python run.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic,prob=CrossroadSearchProblem"
+    util.raiseNotDefined()
 
 
-# Abbreviations
+"Bonus assignment: Adjust the getSuccessors() method in CrossroadSearchAgent class"
+"in searchAgents.py and test with:"
+"python pacman.py -l bigMaze -z .5 -p CrossroadSearchAgent -a fn=astar,heuristic=manhattanHeuristic "  # Abbreviations
 bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
