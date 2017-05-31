@@ -1,4 +1,4 @@
-minDis = 99999999
+     minDis = 99999999
         for ghostState in newGhostStates:
             distGhost = manhattanDistance(newPos, ghostState.getPosition())
             if distGhost < minDis:
