@@ -1,0 +1,17 @@
+minDis = 99999999
+        for ghostState in newGhostStates:
+            distGhost = manhattanDistance(newPos, ghostState.getPosition())
+            if distGhost < minDis:
+                minDis = distGhost
+
+        minDisFood = 99999999
+        for foodPosition in oldFood.asList():
+            distFood = manhattanDistance(newPos, foodPosition)
+            if distFood < minDisFood & distFood != 0:
+                minDisFood = distFood
+            else:
+                minDisFood = 1
+
+        foodLeft = sum(int(j) for i in newFood for j in i)
+
+        return -2 * minDisFood + distGhost - 40 * foodLeft
