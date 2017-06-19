@@ -305,19 +305,21 @@ class MyPacmanAgent(CompetitionAgent):
         elif ghostDistance:
             if capsuleDist:
                 if min(ghostDistance) < 2:
-                    return - min(foodDist) - min(ghostDistance) + currentGameState.getScore() - min(
+                    return - min(foodDist)  + currentGameState.getScore() - min(
                         capsuleDist) * 100
 
                 elif min(ghostDistance) < 5:
                     if self.isTrapped(currentGameState):
                         return -float("Inf")
                     else:
-                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - 999999 * len(capsuleDist) - 0.1 * random.choice(range(len(foodDist)))
+                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - 10000 * len(
+                            capsuleDist) - 0.1 * random.choice(range(len(foodDist)))
                 else:
-                    return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - 999999 * len(capsuleDist) - 0.1 * random.choice(range(len(foodDist)))
+                    return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - 10000 * len(
+                        capsuleDist) - 0.1 * random.choice(range(len(foodDist)))
             else:
                 if min(ghostDistance) < 2:
-                    return - min(foodDist) - min(ghostDistance) + currentGameState.getScore()
+                    return - min(foodDist)  + currentGameState.getScore()
 
                 elif min(ghostDistance) < 7:
                     if self.isTrapped(currentGameState):
@@ -331,7 +333,8 @@ class MyPacmanAgent(CompetitionAgent):
                                 foodDist) - 0.1 * random.choice(range(10))
                 else:
                     if len(foodDist) < 10:
-                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - random.choice(range(len(foodDist)))
+                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - random.choice(
+                            range(len(foodDist)))
                     else:
-                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist)  - 0.1 * random.choice(range(10))
-
+                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - 0.1 * random.choice(
+                            range(15))
