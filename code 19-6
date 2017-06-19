@@ -269,41 +269,6 @@ class MyPacmanAgent(CompetitionAgent):
         """
         A very poor evaluation function. You can do better!
         """
-        # Pos = currentGameState.getPacmanPosition()
-        # Food = currentGameState.getFood()
-        # GhostStates = currentGameState.getGhostStates()
-        # ghostDistance = [self.getMazeDistance(Pos, ghost.configuration.pos) for ghost in GhostStates if
-        #                  ghost.scaredTimer == 0]
-        # scaredDistance = [self.getMazeDistance(Pos, ghost.configuration.pos) for ghost in GhostStates if
-        #                   ghost.scaredTimer != 0]
-        # capsuleDist = [self.getMazeDistance(Pos, capsule) for capsule in currentGameState.getCapsules()]
-        # foodlist = []
-        # for h in range(Food.height):
-        #     for w in range(Food.width):
-        #         if Food[w][h]:
-        #             foodlist.append((w, h))
-        # foodDist = [self.getMazeDistance(Pos, food) for food in foodlist]
-        #
-        # if foodDist == []:
-        #     return float("Inf")
-        #
-        # if currentGameState.isLose():
-        #     return -float("Inf")
-        # if currentGameState.isWin():
-        #     return float("Inf")
-        # if self.isTrapped(currentGameState):
-        #     return -float("Inf")
-        # if ghostDistance == []:
-        #     return - min(foodDist) - min(scaredDistance) + currentGameState.getScore() - 100 * len(
-        #         capsuleDist) + (1 / len(foodlist)) * 100 + random.choice(range(20))
-        # if min(ghostDistance) < 3:
-        #     return - min(foodDist) + min(ghostDistance) + currentGameState.getScore() - 100 * len(
-        #         capsuleDist) + (1 / len(foodlist)) * 100 + random.choice(range(20))
-        # else:
-        #     return - min(foodDist) + currentGameState.getScore() - 100 * len(
-        #         capsuleDist) + (1 / len(foodlist)) * 100 + random.choice(range(20))
-
-        # return min(foodDist) * currentGameState.getScore() * min(ghostDistance)
 
         Pos = currentGameState.getPacmanPosition()
         Food = currentGameState.getFood()
@@ -325,55 +290,48 @@ class MyPacmanAgent(CompetitionAgent):
         if foodDist == []:
             return float("Inf")
         if currentGameState.isLose():
-            print('lose')
             return -float("Inf")
         if currentGameState.isWin():
-            print('win')
             return float("Inf")
         if walls[x][y] == True:
-            print('hit wall')
             return -float("Inf")
 
         if scaredDistance:
-            if min(scaredDistance) < 10:
-                print('1')
+            if min(scaredDistance) < 15:
                 return - min(scaredDistance) + currentGameState.getScore()
             else:
-                print('2')
                 return - min(foodDist) + currentGameState.getScore()
 
         elif ghostDistance:
             if capsuleDist:
                 if min(ghostDistance) < 2:
-                    print('3')
                     return - min(foodDist) - min(ghostDistance) + currentGameState.getScore() - min(
                         capsuleDist) * 100
 
                 elif min(ghostDistance) < 5:
                     if self.isTrapped(currentGameState):
-                        print('trapped')
                         return -float("Inf")
                     else:
-                        print('4')
-                        return -min(foodDist) * 10 - min(ghostDistance) + currentGameState.getScore() - min(
-                            capsuleDist) * 10 + random.choice(range(10))
+                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - 999999 * len(capsuleDist) - 0.1 * random.choice(range(len(foodDist)))
                 else:
-                    print('5')
-                    return - min(foodDist) + currentGameState.getScore() - min(
-                        capsuleDist) * 10 - min(ghostDistance) + random.choice(range(10))
+                    return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - 999999 * len(capsuleDist) - 0.1 * random.choice(range(len(foodDist)))
             else:
                 if min(ghostDistance) < 2:
-                    print('6')
                     return - min(foodDist) - min(ghostDistance) + currentGameState.getScore()
 
                 elif min(ghostDistance) < 7:
                     if self.isTrapped(currentGameState):
-                        print('trapped1')
                         return -float("Inf")
                     else:
-                        print('7')
-                        return -min(foodDist) -0.5* min(ghostDistance) + currentGameState.getScore() + random.choice(range(5))
+                        if len(foodDist) < 10:
+                            return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - random.choice(
+                                range(len(foodDist)))
+                        else:
+                            return currentGameState.getScore() - min(foodDist) - 10 * len(
+                                foodDist) - 0.1 * random.choice(range(10))
                 else:
-                    print('8')
-                    return - min(foodDist) + currentGameState.getScore() - min(ghostDistance) + random.choice(range(10))
-                # -p MyPacmanAgent -l level1_1
+                    if len(foodDist) < 10:
+                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist) - random.choice(range(len(foodDist)))
+                    else:
+                        return currentGameState.getScore() - min(foodDist) - 10 * len(foodDist)  - 0.1 * random.choice(range(10))
+
