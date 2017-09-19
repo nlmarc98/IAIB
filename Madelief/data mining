@@ -1,0 +1,6 @@
+import pandas as pd
+data = pd.read_excel('./nanonose.xls')
+data.drop(data.columns[[0,1,2]], axis=1, inplace=True)
+data.drop(data.index[[0]], inplace = True)
+new_data = data.as_matrix()
+print(new_data)
